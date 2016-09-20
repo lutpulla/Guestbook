@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="./template/main.xhtml">
+
+    <ui:define name="top">
+        Гостевая книга
+    </ui:define>
+
+    <ui:define name="content">
+        #{addBean.refresh()}
+        <h:form id="addForm">
+            <h:panelGrid columns="3" cellpadding="5">
+                <h:outputLabel value="Имя пользователя" />
+                <p:inputText id="userName" 
+                             value="#{addBean.newItem.userName}" 
+                             style="width: 250pt;" 
+                             maxlength="100"
+                             required="true" 
+                             requiredMessage="обязательное!"
+                             validatorMessage="не соответствует формату!">
+                    <f:validateRegex pattern="^([A-Z]|[a-z]|[0-9])\w+$" />
+                </p:inputText>
+                <h:message for="userName"/>
+                
+                <h:outputLabel value="E-mail" />
+                <p:inputText id="email" 
+                             value="#{addBean.newItem.email}" 
+                             style="width: 250pt;"
+                             maxlength="100"
+                             required="true" 
+                             requiredMessage="обязательное!"
+                             validatorMessage="не соответствует формату!">
+                    <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                </p:inputText>
+                <h:message for="email"/>
+                
+                <h:outputLabel value="Сайт" />
+                <p:inputText id="homePage" 
+                             value="#{addBean.newItem.homePage}" 
+                             maxlength="200"
+                             style="width: 250pt;"
+                             validatorMessage="не соответствует формату!">
+                    <f:validateRegex pattern="^(https?:\/\/)?([\w\.]+)\.([a-z]{2,6}\.?)(\/[\w\.]*)*\/?$" />
+                </p:inputText>
+                <h:message for="homePage"/>
+                
+                <h:outputLabel value="Сообщение" />
+                <p:inputTextarea id="messageText"
+                                 value="#{addBean.newItem.messageText}" 
+                                 rows="3" 
+                                 autoResize="false" 
+                                 style="resize: none; width: 250pt;"
+                                 required="true" 
+                                 requiredMessage="обязательное!"/>
+                <h:message for="messageText"/>
+                
+                <h:outputLabel value="Капча"/>
+                <h:panelGrid columns="2" style="width: 100%;">
+                    <p:graphicImage id="captchaImg" value="/captcha.jpg" cache="false"/>
+                    <p:inputText id="captcha" 
+                                 value="#{addBean.captcha}" 
+                                 maxlength="10"
+                                 style="width: 150pt; float: right;"
+                                 required="true" 
+                                 requiredMessage="обязательное!"/>
+                </h:panelGrid>
+                <h:message for="captcha"/>
+                
+                <h:outputLabel value="" />
+                <p:commandButton value="Добавить" action="#{addBean.add()}" ajax="true" update="addForm,:viewForm" style="float: right;"/>
+            </h:panelGrid>
+            <h:messages layout="table" globalOnly="true" style="font-weight: bold;"/>
+        </h:form>
+        <br/>
+        <h:form id="viewForm">
+            <p:dataGrid value="#{viewBean.guestbookList}" 
+                        var="guestbook" 
+                        columns="1"
+                        rows="25" 
+                        paginator="true" 
+                        paginatorPosition="top"
+                        paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        rowsPerPageTemplate="10,25,50,100"
+                        emptyMessage="Нет записей">
+                <p:panel>
+                    <h:outputText value="##{guestbook.id}"/> - 
+                    <h:outputText value="#{guestbook.creationDate}">
+                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="GMT+6"/>
+                    </h:outputText> -
+                    <h:outputText value="#{guestbook.userName}"/>
+                    (<a href="mailto:#{guestbook.email}">#{guestbook.email}</a>
+                    <h:panelGroup rendered="#{not empty guestbook.homePage}">,
+                        <a href="#{guestbook.homePage}" target="_blank">#{guestbook.homePage}</a>
+                    </h:panelGroup>):<br/>
+                    <h:outputText value="#{guestbook.messageText}" escape="false"/>
+                </p:panel>
+            </p:dataGrid>            
+        </h:form>
+    </ui:define>
+
+</ui:composition>

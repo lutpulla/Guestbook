@@ -1,0 +1,15 @@
+.ui-corner-all {
+    border-radius: 0px;
+}
+
+.ui-paginator {
+    border-radius: 0px;
+}
+
+.ui-widget-header {
+    background: #036fab;
+}
+
+.ui-datatable-data tr td {
+    vertical-align: top;
+}

@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="./template/main.xhtml">
+
+    <ui:define name="top">
+        Подробно
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            #{viewBean.refresh()}
+            <p:dataTable value="#{viewBean.guestbookList}" 
+                         var="guestbook" 
+                         rowIndexVar="index"
+                         paginator="true"
+                         rows="25"
+                         sortBy="#{guestbook.id}"
+                         sortOrder="descending"
+                         paginatorPosition="top"
+                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                         rowsPerPageTemplate="10,25,50,100"
+                         emptyMessage="Нет записей">
+                <p:column headerText="№">
+                    <h:outputText value="#{index + 1}" />
+                </p:column>
+                <p:column headerText="ID" sortBy="#{guestbook.id}">
+                    <h:outputText value="#{guestbook.id}" />
+                </p:column>
+                <p:column headerText="Дата" sortBy="#{guestbook.creationDate}">
+                    <h:outputText value="#{guestbook.creationDate}">
+                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="GMT+6"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Пользователь" sortBy="#{guestbook.userName}">
+                    <h:outputText value="#{guestbook.userName}" />
+                </p:column>
+                <p:column headerText="E-mail" sortBy="#{guestbook.email}">
+                    <h:outputText value="#{guestbook.email}" />
+                </p:column>
+                <p:column headerText="Сайт">
+                    <h:outputText value="#{guestbook.homePage}" />
+                </p:column>
+                <p:column headerText="Сообщение">
+                    <h:outputText value="#{guestbook.messageText}" />
+                </p:column>
+                <p:column headerText="IP">
+                    <h:outputText value="#{guestbook.ipAddress}" />
+                </p:column>
+                <p:column headerText="Браузер">
+                    <h:outputText value="#{guestbook.browser}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
