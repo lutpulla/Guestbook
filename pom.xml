@@ -8,6 +8,18 @@
     <packaging>war</packaging>
     <name>Guestbook</name>
 
+    <developers>
+        <developer>
+            <id>lutpulla.avakriyev</id>
+            <name>Lutpulla Avakriyev</name>
+            <email>lutpull@gmail.com</email>
+            <organization>Home</organization>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+
     <repositories>
         <repository>
             <id>hibernate-support1</id>
